@@ -2,6 +2,9 @@
   "name": "@vechain.energy/gas",
   "version": "1.0.4",
   "description": "calculate estimated gas usage for transactions",
+  "repository": "https://github.com/vechain-energy/gas.git",
+  "bugs": "https://github.com/vechain-energy/gas/issues",
+  "homepage": "https://vechain.energy",
   "main": "dist/index.js",
   "types": "types/index.d.ts",
   "license": "MIT",
@@ -22,5 +25,12 @@
     "bent": "^7.3.12",
     "bignumber.js": "^9.1.1",
     "web3-eth-abi": "^1.10.0"
-  }
+  },
+  "keywords": [
+    "vechain",
+    "connex",
+    "web3",
+    "gas",
+    "vtho"
+  ]
 }
