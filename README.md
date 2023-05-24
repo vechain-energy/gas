@@ -2,6 +2,10 @@
 
 ## Basic Usage
 
+```shell
+yarn add @vechain.energy/gas
+```
+
 ```ts
 import estimate from '@vechain.energy/gas'
 
@@ -34,6 +38,6 @@ which default to:
 const defaultOptions = {
     nodeOrConnex: "https://mainnet.veblocks.net",
     gasPriceCoef: 0,
-    bufferGas: 0
+    bufferGas: 15000
 }
-``` 
+```

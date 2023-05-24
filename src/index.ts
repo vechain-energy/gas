@@ -12,7 +12,7 @@ type Options = {
 const defaultOptions = {
     nodeOrConnex: "https://mainnet.veblocks.net",
     gasPriceCoef: 0,
-    bufferGas: 0
+    bufferGas: 15000
 }
 
 export default async function estimate(clauses: Connex.VM.Clause[], _options: Options = {}): Promise<number> {
