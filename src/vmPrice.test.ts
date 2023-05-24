@@ -96,4 +96,43 @@ describe('vmPrice(clauses, nodeOrConnex, caller)', () => {
             caller: undefined
         });
     });
+
+
+    it('passes the caller', async () => {
+        const clauses = [
+            {
+                to: "0x0000000000000000000000000000456E65726779",
+                value: 1,
+                data: "0x"
+            }
+        ];
+        const caller = '0x0000000000000000000000000000000000000000'
+        await vmPrice(clauses, 'https://node.vechain.energy', caller);
+
+        // make sure the HTTP request was made
+        expect(bentMock).toHaveBeenCalledWith('https://node.vechain.energy', 'POST', 'json', 200);
+        expect(postNodeMock).toHaveBeenCalledWith('/accounts/*', {
+            clauses: clauses,
+            caller
+        });
+    });
+
+    it('sets the caller to 0x...01 as default for contract creation', async () => {
+        const clauses = [
+            {
+                to: null,
+                value: 1,
+                data: "0x"
+            }
+        ];
+        await vmPrice(clauses, 'https://node.vechain.energy');
+
+        // make sure the HTTP request was made
+        expect(bentMock).toHaveBeenCalledWith('https://node.vechain.energy', 'POST', 'json', 200);
+        expect(postNodeMock).toHaveBeenCalledWith('/accounts/*', {
+            clauses: clauses,
+            caller: '0x0000000000000000000000000000000000000001'
+        });
+    });
+
 });

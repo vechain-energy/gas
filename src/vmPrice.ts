@@ -1,7 +1,8 @@
 import bent from 'bent'
 import { MAGIC_GAS } from './constants'
 
-export default async function vmPrice(clauses: Connex.VM.Clause[], nodeOrConnex: Connex | string, caller: string | undefined): Promise<number> {
+export default async function vmPrice(clauses: Connex.VM.Clause[], nodeOrConnex: Connex | string, _caller?: string): Promise<number> {
+    const caller = !_caller && clauses.some(({ to }) => !to) ? '0x0000000000000000000000000000000000000001' : _caller
     // get base price via HTTP request
     if (typeof nodeOrConnex === "string") {
         const postNode = bent(nodeOrConnex, 'POST', 'json', 200)
@@ -16,8 +17,7 @@ export default async function vmPrice(clauses: Connex.VM.Clause[], nodeOrConnex:
     }
 
     // alternatively, use connex
-    const explainer = nodeOrConnex.thor
-        .explain(clauses)
+    const explainer = nodeOrConnex.thor.explain(clauses)
 
     if (caller !== undefined) {
         explainer.caller(caller)

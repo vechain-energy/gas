@@ -1,6 +1,6 @@
 {
   "name": "@vechain.energy/gas",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "calculate estimated gas usage for transactions",
   "main": "dist/index.js",
   "types": "types/index.d.ts",
