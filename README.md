@@ -27,9 +27,7 @@ Options are:
 type Options = {
     nodeOrConnex?: Connex | string  // the network to load additional gas information from
     caller?: string                 // optional caller address for the vm gas estimation
-    gasPriceCoef?: number           // priority, 0 (low) to 255 (high)
-    bufferGas?: number              // add a buffer number to gas
-}
+    gasPriceCoef?: number           // priority, 0 (low) to 255 (high)}
 ```
 
 which default to:
@@ -38,6 +36,5 @@ which default to:
 const defaultOptions = {
     nodeOrConnex: "https://mainnet.veblocks.net",
     gasPriceCoef: 0,
-    bufferGas: 15000
 }
 ```

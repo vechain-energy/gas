@@ -21,10 +21,10 @@ jest.mock('bent', () => bentMock, { virtual: true });
 
 
 import vmPrice from './vmPrice';
+import { MAGIC_GAS } from './constants';
 
-
-describe('vmPrice', () => {
-    test('returns a number', async () => {
+describe('vmPrice(clauses, nodeOrConnex, caller)', () => {
+    it('returns a number', async () => {
         const clauses = [
             {
                 to: "0x0000000000000000000000000000456E65726779",
@@ -36,7 +36,7 @@ describe('vmPrice', () => {
         expect(typeof price).toBe('number');
     });
 
-    test('returns a non-negative number', async () => {
+    it('returns a non-negative number', async () => {
         const clauses = [
             {
                 to: "0x0000000000000000000000000000456E65726779",
@@ -48,7 +48,7 @@ describe('vmPrice', () => {
         expect(price).toBeGreaterThanOrEqual(0);
     });
 
-    test('returns the correct VM gas used', async () => {
+    it('returns the VM gas used with MAGIC_GAS added', async () => {
         const clauses = [
             {
                 to: "0x0000000000000000000000000000456E65726779",
@@ -57,7 +57,37 @@ describe('vmPrice', () => {
             }
         ];
         const price = await vmPrice(clauses, 'https://node.vechain.energy', undefined);
-        expect(price).toEqual(791);
+        expect(price).toEqual(MAGIC_GAS + 791);
+
+        // make sure the HTTP request was made
+        expect(bentMock).toHaveBeenCalledWith('https://node.vechain.energy', 'POST', 'json', 200);
+        expect(postNodeMock).toHaveBeenCalledWith('/accounts/*', {
+            clauses: clauses,
+            caller: undefined
+        });
+    });
+
+    it('returns the 0 if no VM gas is used', async () => {
+        const clauses = [
+            {
+                to: "0x0000000000000000000000000000456E65726779",
+                value: 1,
+                data: "0x"
+            }
+        ];
+        postNodeMock.mockResolvedValueOnce([
+            {
+                "data": "0x000000000000000000000000000000000000000000000000000009184e72a000",
+                "events": [],
+                "transfers": [],
+                "gasUsed": 0,
+                "reverted": false,
+                "vmError": ""
+            }
+
+        ]);
+        const price = await vmPrice(clauses, 'https://node.vechain.energy', undefined);
+        expect(price).toEqual(0);
 
         // make sure the HTTP request was made
         expect(bentMock).toHaveBeenCalledWith('https://node.vechain.energy', 'POST', 'json', 200);

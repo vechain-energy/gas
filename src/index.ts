@@ -6,13 +6,11 @@ type Options = {
     nodeOrConnex?: Connex | string
     caller?: string
     gasPriceCoef?: number
-    bufferGas?: number
 }
 
 const defaultOptions = {
     nodeOrConnex: "https://mainnet.veblocks.net",
-    gasPriceCoef: 0,
-    bufferGas: 15000
+    gasPriceCoef: 0
 }
 
 export default async function estimate(clauses: Connex.VM.Clause[], _options: Options = {}): Promise<number> {
@@ -25,7 +23,7 @@ export default async function estimate(clauses: Connex.VM.Clause[], _options: Op
     const basePriceGas = await basePrice(options.nodeOrConnex)
     const vmGas = await vmPrice(clauses, options.nodeOrConnex, options.caller)
 
-    const transactionGas = intrinsicGas + vmGas + options.bufferGas
+    const transactionGas = intrinsicGas + vmGas
 
     const gas = basePriceGas
         .idiv(255)

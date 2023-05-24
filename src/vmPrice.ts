@@ -1,4 +1,5 @@
 import bent from 'bent'
+import { MAGIC_GAS } from './constants'
 
 export default async function vmPrice(clauses: Connex.VM.Clause[], nodeOrConnex: Connex | string, caller: string | undefined): Promise<number> {
     // get base price via HTTP request
@@ -10,7 +11,8 @@ export default async function vmPrice(clauses: Connex.VM.Clause[], nodeOrConnex:
             return 0
         }
 
-        return response.reduce((gas, output) => gas + output.gasUsed, 0);
+        const gas = response.reduce((gas, output) => gas + output.gasUsed, MAGIC_GAS);
+        return gas === MAGIC_GAS ? 0 : gas
     }
 
     // alternatively, use connex
@@ -22,5 +24,6 @@ export default async function vmPrice(clauses: Connex.VM.Clause[], nodeOrConnex:
     }
 
     const outputs = await explainer.execute()
-    return outputs.reduce((gas, output) => gas + output.gasUsed, 0);
+    const gas = outputs.reduce((gas, output) => gas + output.gasUsed, MAGIC_GAS);
+    return gas === MAGIC_GAS ? 0 : gas
 }

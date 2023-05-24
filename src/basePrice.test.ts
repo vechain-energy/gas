@@ -15,12 +15,12 @@ import BigNumber from 'bignumber.js';
 import basePrice from './basePrice';
 
 describe('basePrice', () => {
-  test('returns a BigNumber', async () => {
+  it('returns a BigNumber', async () => {
     const price = await basePrice('https://node.vechain.energy');
     expect(price).toBeInstanceOf(BigNumber)
   });
 
-  test('returns the correct base price', async () => {
+  it('returns the correct base price', async () => {
     const price = await basePrice('https://node.vechain.energy');
     expect(price.toString()).toEqual("10000000000000");
 
