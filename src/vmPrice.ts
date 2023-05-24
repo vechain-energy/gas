@@ -2,7 +2,9 @@ import bent from 'bent'
 import { MAGIC_GAS } from './constants'
 
 export default async function vmPrice(clauses: Connex.VM.Clause[], nodeOrConnex: Connex | string, _caller?: string): Promise<number> {
+    // set default caller for contract creation, because address(0) will revert and return too little gas
     const caller = !_caller && clauses.some(({ to }) => !to) ? '0x0000000000000000000000000000000000000001' : _caller
+
     // get base price via HTTP request
     if (typeof nodeOrConnex === "string") {
         const postNode = bent(nodeOrConnex, 'POST', 'json', 200)
