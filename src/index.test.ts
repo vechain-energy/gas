@@ -8,9 +8,9 @@ describe('intrinsic(clause[])', () => {
                 value: '0x01',
                 data: "0x"
             }
-        ])
+        ], { bufferGas: 15000})
 
-        expect(gas).toEqual(21046)
+        expect(gas).toEqual(21046 + 15000)
     })
 
     it('calculates correctly a test clause with gasPriceCoef of 255', async () => {
@@ -22,7 +22,7 @@ describe('intrinsic(clause[])', () => {
             }
         ], { gasPriceCoef: 255 })
 
-        expect(gas).toEqual(42092)
+        expect(gas).toEqual(72092)
     })
 
     it('calculates correctly a pure vet test clause with gasPriceCoef of 0', async () => {
@@ -32,7 +32,7 @@ describe('intrinsic(clause[])', () => {
                 value: '0x0',
                 data: "0x"
             }
-        ])
+        ], { bufferGas: 0 })
 
         expect(gas).toEqual(21000)
     })
