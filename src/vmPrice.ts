@@ -1,5 +1,5 @@
 import bent from 'bent'
-import { MAGIC_GAS } from './constants'
+import { VM_GAS } from './constants'
 
 export default async function vmPrice(clauses: Connex.VM.Clause[], nodeOrConnex: Connex | string, _caller?: string): Promise<number> {
     // set default caller for contract creation, because address(0) will revert and return too little gas
@@ -14,8 +14,8 @@ export default async function vmPrice(clauses: Connex.VM.Clause[], nodeOrConnex:
             return 0
         }
 
-        const gas = response.reduce((gas, output) => gas + output.gasUsed, MAGIC_GAS);
-        return gas === MAGIC_GAS ? 0 : gas
+        const gas = response.reduce((gas, output) => gas + output.gasUsed, VM_GAS);
+        return gas === VM_GAS ? 0 : gas
     }
 
     // alternatively, use connex
@@ -26,6 +26,6 @@ export default async function vmPrice(clauses: Connex.VM.Clause[], nodeOrConnex:
     }
 
     const outputs = await explainer.execute()
-    const gas = outputs.reduce((gas, output) => gas + output.gasUsed, MAGIC_GAS);
-    return gas === MAGIC_GAS ? 0 : gas
+    const gas = outputs.reduce((gas, output) => gas + output.gasUsed, VM_GAS);
+    return gas === VM_GAS ? 0 : gas
 }

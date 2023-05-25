@@ -21,7 +21,7 @@ jest.mock('bent', () => bentMock, { virtual: true });
 
 
 import vmPrice from './vmPrice';
-import { MAGIC_GAS } from './constants';
+import { VM_GAS } from './constants';
 
 describe('vmPrice(clauses, nodeOrConnex, caller)', () => {
     it('returns a number', async () => {
@@ -48,7 +48,7 @@ describe('vmPrice(clauses, nodeOrConnex, caller)', () => {
         expect(price).toBeGreaterThanOrEqual(0);
     });
 
-    it('returns the VM gas used with MAGIC_GAS added', async () => {
+    it('returns the VM gas used with VM_GAS added', async () => {
         const clauses = [
             {
                 to: "0x0000000000000000000000000000456E65726779",
@@ -57,7 +57,7 @@ describe('vmPrice(clauses, nodeOrConnex, caller)', () => {
             }
         ];
         const price = await vmPrice(clauses, 'https://node.vechain.energy');
-        expect(price).toEqual(MAGIC_GAS + 791);
+        expect(price).toEqual(VM_GAS + 791);
 
         // make sure the HTTP request was made
         expect(bentMock).toHaveBeenCalledWith('https://node.vechain.energy', 'POST', 'json', 200);

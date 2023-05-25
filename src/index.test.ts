@@ -1,5 +1,5 @@
 import estimate from './index'
-import { MAGIC_GAS } from './constants'
+import { VM_GAS } from './constants'
 
 describe('intrinsic(clause[])', () => {
     it('calculates correctly a test clause with gasPriceCoef of 0', async () => {
@@ -11,7 +11,7 @@ describe('intrinsic(clause[])', () => {
             }
         ])
 
-        expect(gas).toEqual(21046 + MAGIC_GAS)
+        expect(gas).toEqual(21046 + VM_GAS)
     })
 
     it('calculates correctly a test clause with gasPriceCoef of 255', async () => {
