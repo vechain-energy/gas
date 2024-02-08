@@ -1,9 +1,14 @@
-import estimate from './index'
+import type { BigNumber } from 'bignumber.js'
+import { calcTxFee } from './calc-tx-fee'
 import { VM_GAS } from './constants'
+
+function scaleGas(gas: BigNumber): number {
+  return gas.dividedBy(1e13).decimalPlaces(0).toNumber()
+}
 
 describe('intrinsic(clause[])', () => {
     it('calculates correctly a test clause with gasPriceCoef of 0', async () => {
-        const gas = await estimate([
+        const gas = await calcTxFee([
             {
                 to: "0x0000000000000000000000000000456E65726779",
                 value: '0x01',
@@ -11,11 +16,11 @@ describe('intrinsic(clause[])', () => {
             }
         ])
 
-        expect(gas).toEqual(21046 + VM_GAS)
+        expect(scaleGas(gas)).toEqual(21046 + VM_GAS)
     })
 
     it('calculates correctly a test clause with gasPriceCoef of 255', async () => {
-        const gas = await estimate([
+        const gas = await calcTxFee([
             {
                 to: "0x0000000000000000000000000000456E65726779",
                 value: '0x01',
@@ -23,11 +28,11 @@ describe('intrinsic(clause[])', () => {
             }
         ], { gasPriceCoef: 255 })
 
-        expect(gas).toEqual(72092)
+        expect(scaleGas(gas)).toEqual(72092)
     })
 
     it('calculates correctly a pure vet test clause with gasPriceCoef of 0', async () => {
-        const gas = await estimate([
+        const gas = await calcTxFee([
             {
                 to: "0x1A6f69Bb160c199B1862c83291d364836558AE8F",
                 value: '0x0',
@@ -35,11 +40,11 @@ describe('intrinsic(clause[])', () => {
             }
         ])
 
-        expect(gas).toEqual(21000)
+        expect(scaleGas(gas)).toEqual(21000)
     })
 
     it('calculates correctly a contract deployment test clause with gasPriceCoef of 128', async () => {
-        const gas = await estimate([
+        const gas = await calcTxFee([
             {
                 to: null,
                 value: '0',
@@ -47,7 +52,7 @@ describe('intrinsic(clause[])', () => {
             }
         ], { gasPriceCoef: 128 })
 
-        expect(gas).toEqual(2283402)
+        expect(scaleGas(gas)).toEqual(2283402)
     })
 
 

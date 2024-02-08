@@ -11,13 +11,13 @@ const postNodeMock = jest.fn().mockResolvedValue([
 const bentMock = jest.fn().mockReturnValue(postNodeMock);
 jest.mock('bent', () => bentMock, { virtual: true });
 
-import BigNumber from 'bignumber.js';
-import basePrice from './basePrice';
+import bn from 'bignumber.js';
+import { basePrice } from './base-price';
 
 describe('basePrice', () => {
   it('returns a BigNumber', async () => {
     const price = await basePrice('https://node.vechain.energy');
-    expect(price).toBeInstanceOf(BigNumber)
+    expect(price).toBeInstanceOf(bn)
   });
 
   it('returns the correct base price', async () => {

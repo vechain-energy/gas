@@ -1,8 +1,14 @@
 import bent from 'bent'
-import BigNumber from 'bignumber.js'
+import bn from 'bignumber.js'
+import type { BigNumber } from "bignumber.js"
 import Web3EthAbi from 'web3-eth-abi'
 
-export default async function basePrice(nodeOrConnex: Connex | string): Promise<BigNumber> {
+/**
+ * Fetch Params VeChain smart contract to get the current base gas price.
+ * @see {@link https://docs.vechain.org/tutorials/Useful-tips-for-building-a-dApp.html#_6-estimate-the-transaction-fee}
+ * @return {Promise<BigNumber>} Base gas price.
+ */
+export async function basePrice(nodeOrConnex: Connex | string): Promise<BigNumber> {
     // get base price via HTTP request
     if (typeof nodeOrConnex === "string") {
         const postNode = bent(nodeOrConnex, 'POST', 'json', 200)
@@ -15,12 +21,12 @@ export default async function basePrice(nodeOrConnex: Connex | string): Promise<
         })
 
         if (!Array.isArray(response)) {
-            return new BigNumber(0)
+            return new bn(0)
         }
 
         const data = response[0].data
         let decoded = Web3EthAbi.decodeParameter('uint256', data)
-        return new BigNumber(String(decoded))
+        return new bn(String(decoded))
     }
 
     // alternatively, use connex
@@ -36,5 +42,5 @@ export default async function basePrice(nodeOrConnex: Connex | string): Promise<
             "outputs": [{ "name": "value", "type": "uint256" }]
         })
         .call('0x000000000000000000000000000000000000626173652d6761732d7072696365')
-    return new BigNumber(outputs.decoded.value);
+    return new bn(outputs.decoded.value);
 }

@@ -20,7 +20,7 @@ const bentMock = jest.fn().mockReturnValue(postNodeMock);
 jest.mock('bent', () => bentMock, { virtual: true });
 
 
-import vmPrice from './vmPrice';
+import { vmGas } from './vm-gas';
 import { VM_GAS } from './constants';
 
 describe('vmPrice(clauses, nodeOrConnex, caller)', () => {
@@ -32,7 +32,7 @@ describe('vmPrice(clauses, nodeOrConnex, caller)', () => {
                 data: "0x"
             }
         ];
-        const price = await vmPrice(clauses, 'https://node.vechain.energy');
+        const price = await vmGas(clauses, 'https://node.vechain.energy');
         expect(typeof price).toBe('number');
     });
 
@@ -44,7 +44,7 @@ describe('vmPrice(clauses, nodeOrConnex, caller)', () => {
                 data: "0x"
             }
         ];
-        const price = await vmPrice(clauses, 'https://node.vechain.energy');
+        const price = await vmGas(clauses, 'https://node.vechain.energy');
         expect(price).toBeGreaterThanOrEqual(0);
     });
 
@@ -56,7 +56,7 @@ describe('vmPrice(clauses, nodeOrConnex, caller)', () => {
                 data: "0x"
             }
         ];
-        const price = await vmPrice(clauses, 'https://node.vechain.energy');
+        const price = await vmGas(clauses, 'https://node.vechain.energy');
         expect(price).toEqual(VM_GAS + 791);
 
         // make sure the HTTP request was made
@@ -86,7 +86,7 @@ describe('vmPrice(clauses, nodeOrConnex, caller)', () => {
             }
 
         ]);
-        const price = await vmPrice(clauses, 'https://node.vechain.energy');
+        const price = await vmGas(clauses, 'https://node.vechain.energy');
         expect(price).toEqual(0);
 
         // make sure the HTTP request was made
@@ -107,7 +107,7 @@ describe('vmPrice(clauses, nodeOrConnex, caller)', () => {
             }
         ];
         const caller = '0x0000000000000000000000000000000000000000'
-        await vmPrice(clauses, 'https://node.vechain.energy', caller);
+        await vmGas(clauses, 'https://node.vechain.energy', caller);
 
         // make sure the HTTP request was made
         expect(bentMock).toHaveBeenCalledWith('https://node.vechain.energy', 'POST', 'json', 200);
@@ -125,7 +125,7 @@ describe('vmPrice(clauses, nodeOrConnex, caller)', () => {
                 data: "0x"
             }
         ];
-        await vmPrice(clauses, 'https://node.vechain.energy');
+        await vmGas(clauses, 'https://node.vechain.energy');
 
         // make sure the HTTP request was made
         expect(bentMock).toHaveBeenCalledWith('https://node.vechain.energy', 'POST', 'json', 200);
