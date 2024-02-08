@@ -1,16 +1,20 @@
 # Vechain Gas Price Calculation
 
+## Acknowledgement
+
+This is a fork from the excellent work of vechain.energy [Vechain Gas Price Calculation](https://github.com/vechain-energy/gas)
+
 ## Basic Usage
 
 ```shell
-yarn add @vechain.energy/gas
+npm i @vearnfi/gas
 ```
 
 ```ts
-import estimate from '@vechain.energy/gas'
+import {calcTxFee} from '@vearnfi/gas'
 
 const clauses = [{ data: '0x', value: '0x0', to: '0x1A6f69Bb160c199B1862c83291d364836558AE8F' }]
-const gasEstimate = await estimate (clauses)
+const txFee = await calcTxFee(clauses)
 ```
 
 This will:

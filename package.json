@@ -16,8 +16,9 @@
     "typescript": "^5.0.4"
   },
   "scripts": {
+    "build": "tsc",
     "test": "jest src",
-    "build": "tsc"
+    "coverage": "jest src --coverage"
   },
   "dependencies": {
     "@vechain/connex-types": "^2.0.12",
