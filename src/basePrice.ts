@@ -1,6 +1,6 @@
 import bent from 'bent'
 import BigNumber from 'bignumber.js'
-import Web3EthAbi from 'web3-eth-abi'
+import { decodeParameter } from 'web3-eth-abi'
 
 export default async function basePrice(nodeOrConnex: Connex | string): Promise<BigNumber> {
     // get base price via HTTP request
@@ -19,7 +19,7 @@ export default async function basePrice(nodeOrConnex: Connex | string): Promise<
         }
 
         const data = response[0].data
-        let decoded = Web3EthAbi.decodeParameter('uint256', data)
+        let decoded = decodeParameter('uint256', data)
         return new BigNumber(String(decoded))
     }
 
